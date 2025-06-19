@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Applied Jobs</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <link rel="stylesheet" href="style.css"/>
+  <style>
+    .navbar {
+      background-color: #6c63ff;
+    }
+    
+  </style>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="dashboard.html">WorkNest</a>
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item"><a class="nav-link" href="dashboard.html">Dashboard</a></li>
+        <li class="nav-item"><a class="nav-link" href="logout.html">Logout</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <div class="container my-5">
+    <h3 class="mb-4">Your Applied Jobs</h3>
+    <div id="applied-jobs-list" class="row g-4"></div>
+  </div>
+
+  <footer class="text-center py-3">
+    &copy; 2025 WorkNest. All rights reserved.
+  </footer>
+
+  <script>
+    const userEmail = localStorage.getItem("loggedInUser");
+    let appliedJobs = JSON.parse(localStorage.getItem("jobs_" + userEmail)) || [];
+
+    const container = document.getElementById("applied-jobs-list");
+
+    function renderAppliedJobs() {
+      container.innerHTML = "";
+
+      if (appliedJobs.length === 0) {
+        container.innerHTML = "<p>You haven't applied for any jobs yet.</p>";
+        return;
+      }
+
+      appliedJobs.forEach((job, index) => {
+        const card = document.createElement("div");
+        card.className = "col-md-6";
+        card.innerHTML = `
+          <div class="card p-3 shadow-sm h-100">
+            <h5>${job.job}</h5>
+            <p><strong>Name:</strong> ${job.name}</p>
+            <p><strong>Email:</strong> ${job.email}</p>
+            <p><strong>Applied on:</strong> ${job.date}</p>
+            <button class="btn btn-danger mt-3" onclick="deleteJob(${index})">Delete</button>
+          </div>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    function deleteJob(index) {
+      appliedJobs.splice(index, 1);
+      localStorage.setItem("jobs_" + userEmail, JSON.stringify(appliedJobs));
+      renderAppliedJobs();
+    }
+
+    renderAppliedJobs();
+
+  </script>
+</body>
+</html>
