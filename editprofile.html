@@ -57,13 +57,11 @@
     const profileKey = "profile_" + loggedInEmail;
     const storedProfile = JSON.parse(localStorage.getItem(profileKey)) || {};
 
-    // Populate form with existing data
     document.getElementById("name").value = storedProfile.name || "";
     document.getElementById("email").value = loggedInEmail;
     document.getElementById("phone").value = storedProfile.phone || "";
     document.getElementById("bio").value = storedProfile.bio || "";
 
-    // Save updated profile
     form.addEventListener("submit", function (e) {
       e.preventDefault();
 
@@ -78,7 +76,6 @@
       window.location.href = "profile.html";
     });
 
-    // Clear profile
     function clearProfile() {
       localStorage.removeItem(profileKey);
       alert("Profile cleared.");
